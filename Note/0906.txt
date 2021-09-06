@@ -36,18 +36,24 @@ module //模組
 因此不會再把檔案開啟一次
 
 ----11:24
-原生引用
+Node內建的套件 套件的名稱就可以了
 const http = require('http');
 不用加./
 
 
 ----11:34
-阿帕契會根據去尋找資料夾
+阿帕契會根據路徑去尋找對應到的資料夾或檔案
 
-node的話會根據/去尋找
+node的話
+整個server就是這隻程式
+不管怎樣的路經 都是這支
 
 資料會在req裡面
 並且我們可以設定res 去設定回應(res)
+(從檔頭拿 GET /123/456?a=1)
+req.url --> hash不會進去
+e.g. /123/456?a=1#abc
+只會顯示/123/456?a=1
 
 ----Dev
 代表開發的時候需要而已
@@ -63,3 +69,40 @@ npx nodemon practice/http_server01.js
 npm i --save-dev nodemon (安裝成DEV)
 
 npm un nodemon (移除)
+
+-----------------------------noon
+
+Input/Output
+
+non-block IO
+ajax
+
+----
+在哪執行檔案就會在哪裡(相對位置)
+'./data.json'
+
+指定生成位置:用絕對位置去寫
+__dirname + '/data.json'
+
+----02:13
+理論上讀取會比寫入還要快
+因為硬碟的關係
+
+return vs end
+
+----03:15
+express的差別
+
+--------
+也可以直接nodemon
+這樣就依package.json裡面的位置(main)
+
+---
+start/test 可以不用有run
+
+也可以在package.json裡面
+的scripts設定環境變數
+e.g.  "start": "NODE_ENV=production nodemon index.js",
+
+window環境變數:
+"start": "SET NODE_ENV=production \" node index.js"
