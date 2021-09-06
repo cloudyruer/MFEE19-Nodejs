@@ -34,3 +34,32 @@ module //模組
 如果require兩次只有第一次會執行
 第二次以後會用之前的參照
 因此不會再把檔案開啟一次
+
+----11:24
+原生引用
+const http = require('http');
+不用加./
+
+
+----11:34
+阿帕契會根據去尋找資料夾
+
+node的話會根據/去尋找
+
+資料會在req裡面
+並且我們可以設定res 去設定回應(res)
+
+----Dev
+代表開發的時候需要而已
+正式版本是不需要用的
+
+//使用DEV套件的方法(npx) 
+//只能在專案裡面跑
+//且要有nodemon 安裝在專案中
+npx nodemon
+
+npx nodemon practice/http_server01.js
+
+npm i --save-dev nodemon (安裝成DEV)
+
+npm un nodemon (移除)
