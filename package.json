@@ -1,0 +1,20 @@
+{
+  "name": "mfee19-nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cloudyruer/MFEE19-Nodejs.git"
+  },
+  "keywords": [],
+  "author": "Joey",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cloudyruer/MFEE19-Nodejs/issues"
+  },
+  "homepage": "https://github.com/cloudyruer/MFEE19-Nodejs#readme"
+}

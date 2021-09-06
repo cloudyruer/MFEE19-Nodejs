@@ -1,0 +1,36 @@
+PDF講義:
+https://www.dropbox.com/s/i7j6g81ldnib7rg/nodejs_express_mfee_202109.pdf?dl=0
+
+
+https://bitbucket.org/lsd0125/mfee06-nodejs.git
+
+V8(代號)
+
+LTS 長期維護版本會是偶數版
+
+----------------------------------
+如果powershell不行的話 有時候可以試試看cmd
+
+查看全域安裝的情況
+npm ls -g 
+記得是ls 因為是npm中
+-------------
+查看其他的aliases 加flag: --help
+npm install --help
+
+-----
+Node全域中  this === global 
+瀏覽器全域中 this === window 
+
+
+---CommonJS 
+CommonJS 不是一個公認的標準 (import/export才是)
+package //套件
+module //模組
+
+以global的方式安裝會在C槽
+
+----10:37
+如果require兩次只有第一次會執行
+第二次以後會用之前的參照
+因此不會再把檔案開啟一次

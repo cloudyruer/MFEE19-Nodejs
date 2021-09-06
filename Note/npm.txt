@@ -1,0 +1,5 @@
+0906 - es-checker
+檢查Node支援Es6的情況
+綠色代表有支援
+npm install -g es-checker
+-----
