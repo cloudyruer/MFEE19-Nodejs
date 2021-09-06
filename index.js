@@ -9,11 +9,14 @@ const app = express();
 app.use(express.static('public'));
 
 // 3. *** 路由定義開始: BEGIN
+// 路由在前面就會優先使用
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
 // *** 路由定義結束: END
+// NOTE 順序重要 一定要在最後面
+// 不然前面的會直接被這個取代[]
 app.use((req, res) => {
   res.status(404).send(`<h1>找不到頁面</h1>`);
 });

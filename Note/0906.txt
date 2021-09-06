@@ -85,13 +85,24 @@ ajax
 __dirname + '/data.json'
 
 ----02:13
+寫入會比讀取要慢
+寫入比較慢
 理論上讀取會比寫入還要快
 因為硬碟的關係
 
 return vs end
 
-----03:15
+----03:18
 express的差別
+send()的話
+string會當成html
+
+另外比較適合簡單的server
+因為要定義每個路由處理各種事情
+
+路由兩個重要的:
+1.路徑
+2.http的方法 e.g. get
 
 --------
 也可以直接nodemon
@@ -105,4 +116,16 @@ start/test 可以不用有run
 e.g.  "start": "NODE_ENV=production nodemon index.js",
 
 window環境變數:
-"start": "SET NODE_ENV=production \" node index.js"
+  "dev-win": "set NODE_ENV=production && nodemon index.js"
+
+
+或是直接在終端
+./dev-win.bat
+
+---靜態的資料夾
+一開始:
+相當於網站的根目錄
+app.use(express.static('public'));
+server不會去更動內容
+
+後端產生去更動的則是動態的
