@@ -1,0 +1,14 @@
+
+GET http://localhost:3000/try-qs?a[name]=bill&a[age]=20
+
+###
+POST http://localhost:3000/try-post
+Content-Type: application/x-www-form-urlencoded
+
+name=david&gender=male
+
+###
+POST http://localhost:3000/try-post
+Content-Type: application/json
+
+{"name":"david","gender":"male"}

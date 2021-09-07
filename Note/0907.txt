@@ -1,5 +1,22 @@
 0900 看一下
 檔案沒有經過後端就是靜態的內容
+e.g.圖檔
+css檔案 js檔
+
+如果頁面要有RWD
+原則上要有meta viewport
+
+express 概念
+
+f1 = a => a*a;
+
+f1(2); //4
+
+f1.my_func = a => a**3
+
+f1.my_func(3) //27
+
+f1.constructor.name // 'Function'
 
 ------
 dist 發表的
@@ -17,3 +34,7 @@ ESJ
 res.end()
 res.send()
 res.render()
+res.json()
+
+express會根據設定的content-type
+決定要使用哪個個middleware
