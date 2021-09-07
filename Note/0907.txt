@@ -30,6 +30,11 @@ ESJ
 通常字很小但很整齊
 都是樣板錯誤
 
+10:17
+<%- 用來"避免" HTML 跳脫
+
+  const sales = require('./data/sales.json'); //JSON 會自動轉換成原生的JS物件
+
 一次只能一個
 res.end()
 res.send()

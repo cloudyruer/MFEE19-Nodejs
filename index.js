@@ -27,17 +27,19 @@ app.use('/bootstrap', express.static('node_modules/bootstrap/dist'));
 app.get('/', (req, res) => {
   // 第一個參數樣板相對路徑 不會是斜線開頭
   // 第二個參數
+  // 不用打附檔名 因為前面已經設定了樣板引擎
   res.render('home', { name: 'Joey' });
   // res.send('Hello World!');
 });
 
 app.get('/json-sales', (req, res) => {
-  const sales = require('./data/sales.json'); //JSON 會自動轉換成原生的JS物件
+  const sales = require('./data/sales.json'); //JSON 會自動轉換成原生的JS 陣列 或 物件
   // require 只有第一次會有載入
   // 所以如果第二次的話不會有所更改 要重新啟動
 
   console.log(sales);
   // 當傳遞物件或陣列時，這兩個方法是相同的，但是res.json()也會轉換非物件，如null和undefined，這些無效的JSON。
+  // json() 把陣列或物件轉換成JSON 字串 再丟給用戶端
   // res.json(sales); //效果和send會一樣  但是更加明確
   // res.send(sales);
   // res.render('json-sales', { sales: sales });
@@ -50,6 +52,7 @@ app.get('/try-qs', (req, res) => {
 
 // 把 urlencodedParser 當 middleware
 app.post('/try-post', (req, res) => {
+  // 沒有middleware req.body 沒有東西
   res.json(req.body);
 });
 
