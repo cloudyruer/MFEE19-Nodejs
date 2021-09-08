@@ -2,6 +2,11 @@ require('dotenv').config(); //載入 .env的設定
 
 // 1. 引入 express
 const express = require('express');
+// 0908 multer
+const multer = require('multer');
+const upload = multer({ dest: 'tmp_uploads/' });
+
+const fs = require('fs').promises;
 
 // 2. 建立 web server 物件
 const app = express();
@@ -54,6 +59,38 @@ app.get('/try-qs', (req, res) => {
 app.post('/try-post', (req, res) => {
   // 沒有middleware req.body 沒有東西
   res.json(req.body);
+});
+
+// NOTE 0908 表單
+app.get('/try-post-form', (req, res) => {
+  res.render('try-post-form');
+});
+
+app.post('/try-post-form', (req, res) => {
+  res.render('try-post-form', req.body);
+});
+
+app.get('/pending', (req, res) => {});
+
+// avatar 上傳的欄位名稱 範例中的欄位名稱為: avatar
+app.post('/try-upload', upload.single('avatar'), async (req, res) => {
+  console.log(req.file); //查看req.file的屬性
+  if (req.file && req.file.mimetype === 'image/jpeg') {
+    try {
+      // rename 就是移動
+      await fs.rename(
+        req.file.path,
+        __dirname + '/public/img/' + req.file.originalname
+      );
+      return res.json({ success: true, filename: req.file.originalname });
+    } catch (err) {
+      return res.json({ success: false, error: '無法存檔', err });
+    }
+  } else {
+    // 不是的話就不要
+    await fs.unlink(req.file.path); //刪除暫存檔案
+    res.json({ success: false, error: '格式不對' });
+  }
 });
 
 // NOTE

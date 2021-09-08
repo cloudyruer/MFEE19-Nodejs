@@ -1,0 +1,31 @@
+express.urlencoded({ extended: false })
+如果設定成true 會使用 qs 套件
+(qs資料量大時 效能較好)
+
+https://stackoverflow.com/questions/29175465/body-parser-extended-option-qs-vs-querystring
+
+
+locals.password
+ESJ {} 丟進去後
+合併在locals裡面
+
+非同步的狀態
+可以用promise來執行
+
+黑色代表你的錯誤有處理
+
+10:52 定義看一下
+
+req.headers
+req.get()
+
+有body parser
+req.body
+
+req.body //一般的資料會在這裡
+req.params //路徑
+req.file //單一檔案
+req.files //多個檔案
+
+11:50附近看一下
+為甚麼要上傳用async
