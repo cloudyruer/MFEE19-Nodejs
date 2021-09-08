@@ -4,6 +4,10 @@ express.urlencoded({ extended: false })
 
 https://stackoverflow.com/questions/29175465/body-parser-extended-option-qs-vs-querystring
 
+在node中
+有些設定要去設定 不然可能會跳WARNING
+e.g. express.urlencoded({ extended: false })
+因為以後預設可能會改變
 
 locals.password
 ESJ {} 丟進去後
@@ -14,13 +18,21 @@ ESJ {} 丟進去後
 
 黑色代表你的錯誤有處理
 
-10:52 定義看一下
+
 
 req.headers
 req.get()
 
+querystring //比較有彈性
+
+路徑的話/params
+SEO比較好
+
 有body parser
 req.body
+
+get時:
+req.query
 
 req.body //一般的資料會在這裡
 req.params //路徑
@@ -29,3 +41,72 @@ req.files //多個檔案
 
 11:50附近看一下
 為甚麼要上傳用async
+
+----------------------afternoon
+
+multer
+錯誤先行
+null:因為沒有錯誤
+cb(null,位置)
+
+!! 轉換成布林直
+
+多張上傳
+練習：把 upload-img01.html 改成可以上傳多個檔案，並顯示在頁面上
+
+name要改
+
+top-level middleware
+.urlencoded
+.json
+
+temp_uploads
+因為不知道用戶上傳怎樣的檔案
+不給副檔名是因為安全上的考量
+因為給副檔名就有可能被執行
+因為很多的執行是依靠副檔名去做判斷的
+
+
+用post的情況下 app.post
+express不會像querystring那樣去處理
+所以我們要用body parser
+body -> http 文件的主體
+
+一般的資料還是會在req.body
+只有上傳的檔案會在req.file
+
+
+app.use
+不管甚麼方法都接收
+
+app.get
+只接受特定的http方法
+這個例子是get
+
+
+//GET
+如果在表單當中使用 GET 方法送出，那麼所有表單的內容都以 url encoded 的方式被傳送。直接去querystring找
+req.query
+
+BTW
+Content-type 一般只存在於 Post 方法中，因為 Get 方法是不含 “body” 的，它的請求參數都會被編碼到 url 後面，所以在 Get 方法中加 Content-type 是無用的。
+
+
+//POST
+除此之外，如果將 FormData 放到 fetch 的 body 裡頭，瀏覽器會自動幫你以 multipart/form-data 的形式傳送：
+
+結論系列: 
+直接從/路徑 選擇method="post"的話: (/try-post-form) 例子
+Content-Type: application/x-www-form-urlencoded
+將使用body parser 取得 req.body 中的內容
+
+如果使用FormData的話:
+Content-Type: multipart/form-data
+body parser 陣亡
+將使用 multer
+注意: Multer 不会处理任何非 multipart/form-data 类型的表单数据。
+
+總結
+Post 請求數據的時候有兩種，傳 json 的話就是 application/json，不傳 json 的話就是 application/x-www-form-urlencoded，傳文件的話用 multipart/form-data
+
+https://stackoverflow.com/questions/4526273/what-does-enctype-multipart-form-data-mean

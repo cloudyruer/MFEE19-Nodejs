@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
+  </head>
+  <body>
+    <div class="container">
+      <form name="fake_form" onsubmit="return false">
+        <img src="" alt="" width="300px" id="img01" />
+        <!-- 記得改成button 不然預設是submit -->
+        <button type="button" class="btn btn-success" onclick="avatar.click()">
+          上傳大頭貼
+        </button>
+
+        <div class="mb-3">
+          <label for="my_img" class="form-label">image</label>
+          <input type="text" class="form-control" id="my_img" name="my_img" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+
+      <!-- 上傳後立刻傳到後端 然後再拉回去 -->
+      <form name="form1" style="display: none">
+        <input type="file" id="avatar" name="avatar" />
+      </form>
+    </div>
+
+    <script>
+      const avatar = document.querySelector('#avatar');
+
+      avatar.addEventListener('change', async (event) => {
+        const fd = new FormData(document.form1);
+        const res = await fetch('/try-upload2', {
+          method: 'POST',
+          body: fd,
+        });
+
+        // 執行
+        const obj = await res.json();
+        document.querySelector('#img01').src = '/img/' + obj.filename;
+        document.fake_form.my_img.value = obj.filename;
+      });
+    </script>
+  </body>
+</html>

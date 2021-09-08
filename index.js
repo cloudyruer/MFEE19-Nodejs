@@ -3,8 +3,11 @@ require('dotenv').config(); //載入 .env的設定
 // 1. 引入 express
 const express = require('express');
 // 0908 multer
+// 注意: Multer 不会处理任何非 multipart/form-data 类型的表单数据。
 const multer = require('multer');
 const upload = multer({ dest: 'tmp_uploads/' });
+// 0908 下午 自製
+const uploadImg = require('./modules/upload-image');
 
 const fs = require('fs').promises;
 
@@ -14,6 +17,10 @@ const app = express();
 // 不需要require 告訴樣板引擎是甚麼就好
 
 // top-level middleware
+// 將 body-parser 設定成頂層 middleware，放在所有路由之前。
+// 其包含兩種解析功能： urlencoded 和 json 。
+// for body!!!!!!!!!!!!!
+// body-parser which cannot handle multipart requests
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
@@ -70,6 +77,18 @@ app.post('/try-post-form', (req, res) => {
   res.render('try-post-form', req.body);
 });
 
+// app.post('/try-post-form', (req, res) => {
+//   console.log(req.body);
+//   res.send(req.body);
+//   // res.render('try-post-form', req.body);
+// });
+
+// app.post('/try-post-form', upload.none(), function (req, res) {
+//   console.log(req.body);
+//   console.log(Date.now());
+//   res.send(req.body);
+// });
+
 app.get('/pending', (req, res) => {});
 
 // avatar 上傳的欄位名稱 範例中的欄位名稱為: avatar
@@ -77,7 +96,7 @@ app.post('/try-upload', upload.single('avatar'), async (req, res) => {
   console.log(req.file); //查看req.file的屬性
   if (req.file && req.file.mimetype === 'image/jpeg') {
     try {
-      // rename 就是移動
+      // rename 就是移動 移動檔案位置
       await fs.rename(
         req.file.path,
         __dirname + '/public/img/' + req.file.originalname
@@ -92,6 +111,39 @@ app.post('/try-upload', upload.single('avatar'), async (req, res) => {
     res.json({ success: false, error: '格式不對' });
   }
 });
+
+// 0908 下午
+app.post('/try-upload2', uploadImg.single('avatar'), async (req, res) => {
+  res.json(req.file);
+});
+
+// 一個欄位 但上傳多個圖檔 array
+// 可以設定參數限制最高數量 uploadImg.array('photo',12)
+app.post('/try-upload3', uploadImg.array('photo'), async (req, res) => {
+  // NOTE 這邊要改成 files 有 s
+  res.json(req.files);
+});
+
+// 要兩個 \\ 因為第一個是跳脫 但我們需要 \ 所以 \\
+// reg 用來判斷字串 不會轉換類型
+// :id(\\d+)? 可以有 也可以沒有  但如果有 就要符合格式
+app.get('/my-params1/:action?/:id(\\d+)?', (req, res) => {
+  // :action 路徑代稱
+  // ? 選擇性
+  // * 會變成陣列 '/my-params3/*/*?'
+  res.json(req.params);
+});
+
+app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
+  let u = req.url.split('?')[0];
+  u = u.slice(3);
+  u = u.split('-').join('');
+
+  res.json({ url: req.url, mobile: u });
+});
+
+// routes/admin 那邊require 過來
+app.use(require('./routes/admin2'));
 
 // NOTE
 // https://stackoverflow.com/questions/19041837/difference-between-res-send-and-res-json-in-express-js
