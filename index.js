@@ -10,6 +10,9 @@ const upload = multer({ dest: 'tmp_uploads/' });
 const uploadImg = require('./modules/upload-image');
 
 const fs = require('fs').promises;
+const session = require('express-session');
+const moment = require('moment-timezone');
+const db = require('./modules/connect-mysql');
 
 // 2. 建立 web server 物件
 const app = express();
@@ -26,6 +29,28 @@ app.use(express.json());
 
 app.set('view engine', 'ejs');
 
+// NOTE 0909 session
+// session 放在set 後面 確定都有樣板引擎
+app.use(
+  // 預設 存在記憶體裡面
+  session({
+    // NOTE 都要設定 因為以後預設值可能會更改
+    // 新用戶沒有使用到 session 物件時不會建立 session 和發送 cookie
+    name: 'joeySessionId', //可以改預設Cookies的名字
+    saveUninitialized: false,
+    resave: false, // 沒變更內容是否強制回存
+    secret: 'UH1uh1ada--4', //加密用字串
+    cookie: {
+      // 如果沒有設定存活時間: 瀏覽器關閉時失效
+      // 如果有設定的話
+      // 在瀏覽器關閉的同時還會繼續存活
+      // 每次request時都會重新延長20分鐘 (我們下面的設定)
+      maxAge: 1200000, // 存活時間 20分鐘，單位毫秒
+      // maxAge: 5000, // 測試用:五秒
+    },
+  })
+);
+
 // 用此這方式設定 public相當於網站的根目錄
 app.use(express.static('public'));
 
@@ -34,9 +59,16 @@ app.use('/jquery', express.static('node_modules/jquery/dist'));
 app.use('/bootstrap', express.static('node_modules/bootstrap/dist'));
 // app.use(express.static('public'));
 
+app.use((req, res, next) => {
+  // 理論上有用render的都會有影響
+  res.locals.title = '小新的網站';
+  res.locals.myArr = ['a', 'b', 'c'];
+  next(); //看要不要繼續往下
+});
 // 3. *** 路由定義開始: BEGIN
 // 路由在前面就會優先使用
 app.get('/', (req, res) => {
+  // res.locals.title = '小新的首頁';
   // 第一個參數樣板相對路徑 不會是斜線開頭
   // 第二個參數
   // 不用打附檔名 因為前面已經設定了樣板引擎
@@ -143,7 +175,38 @@ app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
 });
 
 // routes/admin 那邊require 過來
+// 用use 沒有下路徑 相當於 /
 app.use(require('./routes/admin2'));
+app.use('/admin3', require('./routes/admin3'));
+
+// 0909
+app.get('/try-sess', (req, res) => {
+  // 不可以叫cookie 因為裡面就有了 會取代原本的
+  // 除了cookie 外都可以(理論上)
+  req.session.myVar = req.session.myVar || 0;
+  req.session.myVar++;
+
+  res.json(req.session);
+});
+
+app.get('/try-moment', (req, res) => {
+  const fm = 'YYYY-MM-DD HH:mm:ss';
+
+  res.json({
+    m1: moment().format(fm),
+    m2: moment().tz('Europe/Berlin').format(fm),
+    m3: moment().tz('Asia/Tokyo').format(fm),
+  });
+});
+
+app.get('/try-db', async (req, res) => {
+  // 因為回傳的是 array
+  const rows = await db.query(
+    'SELECT * FROM address_book WHERE `name` LIKE ?',
+    ['%新%']
+  );
+  res.json(rows);
+});
 
 // NOTE
 // https://stackoverflow.com/questions/19041837/difference-between-res-send-and-res-json-in-express-js

@@ -1,0 +1,49 @@
+0909 看看
+
+
+baseUrl": ""
+
+baseUrl+url 才是完整路徑 = originalUrl
+
+"url": "/asd/ad",
+"baseUrl": "/admin3",
+"originalUrl": "/admin3/asd/ad"
+
+如果是空的或'/'
+baseUrl = "" //空字串
+
+router 和 app 基本上一樣
+除了router在要分成不同檔案時會使用
+
+結論:
+同一檔案: app
+不同檔案: router
+
+-------------------
+res.end()
+res.send()
+res.render()
+res.json()
+res.redirect()
+
+-------------------
+會在locals裡面
+使用的時候可以直接 title
+locals.title
+然後如果要印出來的話要加 = 
+e.g. <%= title %>
+
+----------------------\
+    cookie: {
+      // 如果沒有設定存活時間: 瀏覽器關閉時失效
+      // 如果有設定的話
+      // 在瀏覽器關閉的同時還會繼續存活
+      // 每次request時都會重新延長20分鐘 (我們下面的設定)
+      maxAge: 1200000, // 存活時間 20分鐘，單位毫秒
+      // maxAge: 5000, // 測試用:五秒
+    },
+
+-------------
+MySQL2
+效能更好
+有promise 

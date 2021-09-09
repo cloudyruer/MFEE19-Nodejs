@@ -4,10 +4,15 @@
 
 <div class="container">
   <h2><%= name %></h2>
-  <h2><%= name %></h2>
-  <h2><%= name %></h2>
+  <h2><%= locals.name %></h2>
+  <h2><%= myArr %></h2>
+  <h2><%= settings.env %></h2>
 </div>
 
 <%- include('parts/scripts') %>
 <!--  -->
+<script>
+  const data = <%- JSON.stringify(locals) %>;
+  console.log(data);
+</script>
 <%- include('parts/html-foot') %>

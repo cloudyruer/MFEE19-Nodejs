@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
+  </head>
+  <body>
+    <div class="container">
+      <form name="fake_form" onsubmit="return false">
+        <div id="imgs"></div>
+        <button type="button" class="btn btn-success" onclick="photo.click()">
+          上傳照片
+        </button>
+
+        <div class="mb-3">
+          <label for="my_img" class="form-label">image</label>
+          <input type="text" class="form-control" id="my_img" name="my_img" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+
+      <form name="form1" style="display: none">
+        <input type="file" id="photo" name="photo" multiple />
+      </form>
+    </div>
+
+    <script>
+      const photo = document.querySelector('#photo'); // 欄位
+      const imgs = document.querySelector('#imgs');
+      const imgData = [];
+
+      const renderImages = () => {
+        imgs.innerHTML = '';
+
+        imgData.forEach((el) => {
+          const i = new Image();
+          i.width = 300;
+          i.src = '/img/' + el;
+          imgs.append(i);
+        });
+      };
+
+      photo.addEventListener('change', async (event) => {
+        const fd = new FormData(document.form1);
+        const res = await fetch('/try-upload3', {
+          method: 'POST',
+          body: fd,
+        });
+        const ar = await res.json();
+        ar.forEach((el) => {
+          imgData.push(el.filename);
+        });
+        renderImages();
+        document.fake_form.my_img.value = JSON.stringify(imgData);
+      });
+    </script>
+  </body>
+</html>
