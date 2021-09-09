@@ -15,6 +15,25 @@ baseUrl = "" //空字串
 router 和 app 基本上一樣
 除了router在要分成不同檔案時會使用
 
+---
+.route 指定路徑 但沒有決定用甚麼方法
+
+.all -> 所有的方法
+
+next() -> 必須呼叫才會往下傳遞
+
+此外因為cookie被濫用
+所以以後可能會不能用
+以後在做的時候最好考慮其他的方式儲存資料
+
+---
+NOTE 登出表單 P47
+app.get('/logout', (req, res)=>{
+delete req.session.loginUser;
+res.redirect('/login');
+});
+
+
 結論:
 同一檔案: app
 不同檔案: router
