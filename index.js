@@ -11,8 +11,12 @@ const uploadImg = require('./modules/upload-image');
 
 const fs = require('fs').promises;
 const session = require('express-session');
+// 0910
+const MysqlStore = require('express-mysql-session')(session);
+
 const moment = require('moment-timezone');
 const db = require('./modules/connect-mysql');
+const sessionStore = new MysqlStore({}, db);
 
 // 2. 建立 web server 物件
 const app = express();
@@ -40,6 +44,8 @@ app.use(
     saveUninitialized: false,
     resave: false, // 沒變更內容是否強制回存
     secret: 'UH1uh1ada--4', //加密用字串
+    // NOTE 0910
+    store: sessionStore,
     cookie: {
       // 如果沒有設定存活時間: 瀏覽器關閉時失效
       // 如果有設定的話
@@ -59,10 +65,19 @@ app.use('/jquery', express.static('node_modules/jquery/dist'));
 app.use('/bootstrap', express.static('node_modules/bootstrap/dist'));
 // app.use(express.static('public'));
 
+// NOTE 自訂的 middleware
 app.use((req, res, next) => {
   // 理論上有用render的都會有影響
   res.locals.title = '小新的網站';
+  res.locals.pageName = ''; //預設把pageName 設定為空字串
   res.locals.myArr = ['a', 'b', 'c'];
+
+  //  0910 設定 template 的] helper function
+  res.locals.dateToDateString = (d) => moment(d).format('YYYY-MM-DD');
+  res.locals.dateToDateTimeString = (d) =>
+    moment(d).format('YYYY-MM-DD HH:mm:ss');
+  //  const fm = 'YYYY-MM-DD HH:mm:ss';
+
   next(); //看要不要繼續往下
 });
 // 3. *** 路由定義開始: BEGIN
@@ -77,6 +92,8 @@ app.get('/', (req, res) => {
 });
 
 app.get('/json-sales', (req, res) => {
+  res.locals.pageName = 'json-sales';
+
   const sales = require('./data/sales.json'); //JSON 會自動轉換成原生的JS 陣列 或 物件
   // require 只有第一次會有載入
   // 所以如果第二次的話不會有所更改 要重新啟動
@@ -178,6 +195,7 @@ app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
 // 用use 沒有下路徑 相當於 /
 app.use(require('./routes/admin2'));
 app.use('/admin3', require('./routes/admin3'));
+app.use('/address-book', require('./routes/address-book'));
 
 // 0909
 app.get('/try-sess', (req, res) => {
