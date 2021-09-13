@@ -66,8 +66,61 @@ router
     res.locals.pageName = 'ab-add';
     res.render('address-book/add');
   })
-  .post(upload.none(), async (req, res) => {
-    res.json(req.body);
+  // .post(upload.none(), async (req, res) => {
+  .post(async (req, res) => {
+    // TODO: 欄位檢查
+    const output = {
+      success: false,
+    };
+
+    // NOTE 第一種
+    // const sql =
+    //   'INSERT INTO `address_book`(' +
+    //   '`name`, `email`, `mobile`, `birthday`, `address`, `created_at`) VALUES (?, ?, ?, ?, ?, NOW())';
+
+    // const [result] = await db.query(sql, [
+    //   req.body.name,
+    //   req.body.email,
+    //   req.body.mobile,
+    //   req.body.birthday,
+    //   req.body.address,
+    // ]);
+
+    // NOTE 第二種
+    //  ? 裡面放得要是一個obj
+    console.log(req.body);
+    const input = { ...req.body, created_at: new Date() };
+    // 必填欄位都要有
+    const sql = 'INSERT INTO `address_book` SET ?';
+    let result = {};
+    // 處理新增資料時可能的錯誤
+    try {
+      [result] = await db.query(sql, [input]);
+    } catch (ex) {
+      output.error = ex.toString();
+    }
+
+    output.result = result;
+    // insertId 插進去的sid
+    if (result.affectedRows && result.insertId) {
+      output.success = true;
+    }
+
+    console.log({ result });
+    /*
+    {
+      result: ResultSetHeader {
+        fieldCount: 0,
+        affectedRows: 1,
+        insertId: 148,
+        info: '',
+        serverStatus: 2,
+        warningStatus: 0
+      }
+    }
+     */
+
+    res.json(output);
   });
 
 module.exports = router;

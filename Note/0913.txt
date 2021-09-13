@@ -7,7 +7,7 @@
 
 
 insert into 
-update v
+update
 delete 
 都會是下面的
 affectedRows: 1,
@@ -68,3 +68,10 @@ RESTful API 作法：
 // 如何阻止表單送出?
 
 10:50 看個
+
+csrf 11:15
+避免跨網域請求問題
+
+
+joi
+檢查格式

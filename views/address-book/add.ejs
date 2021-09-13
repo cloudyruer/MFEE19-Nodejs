@@ -69,18 +69,41 @@
 
   function checkForm() {
     const fd = new FormData(document.form1);
+    // NOTE 第一種
     // const usp = new URLSearchParams(new FormData(document.form1));
     // console.log(usp.toString());
 
+    // NOTE 第二種 要用 multer
     // 以 multipart/form-data 的格式送出
     // 用form-data 的時候 content-type 會被設定成 multipart/form-data
+    // fetch('', {
+    //   method: 'POST',
+    //   body: fd,
+    // })
+    //   .then((r) => r.json())
+    //   .then((obj) => {
+    //     console.log(obj);
+    //   });
+
+    // NOTE 第三種  以urlencoded 的格式送出 不需要用 multer
     fetch('', {
       method: 'POST',
-      body: fd,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      // 把form-data object 轉換成 字串
+      // searchParams.toString();
+      // "foo=bar&baz=bar"
+      body: new URLSearchParams(fd).toString(),
     })
       .then((r) => r.json())
       .then((obj) => {
-        console.log(obj);
+        console.log(JSON.stringify(obj, null, 4));
+        if (obj.success) {
+          location.href = '/address-book/list';
+        } else {
+          alert('資料無法新增成功\n' + (obj.error || ''));
+        }
       });
   }
 </script>
