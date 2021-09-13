@@ -71,6 +71,7 @@ app.use((req, res, next) => {
   res.locals.title = '小新的網站';
   res.locals.pageName = ''; //預設把pageName 設定為空字串
   res.locals.myArr = ['a', 'b', 'c'];
+  res.locals.keyword = ''; //設定keyword再locals裡面
 
   //  0910 設定 template 的] helper function
   res.locals.dateToDateString = (d) => moment(d).format('YYYY-MM-DD');

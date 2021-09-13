@@ -1,0 +1,97 @@
+<%- include('../parts/html-head') %> <%- include('../parts/navbar') %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">編輯通訊錄</h5>
+
+          <form name="form1" onsubmit="checkForm(); return false;">
+            <div class="mb-3">
+              <label for="name" class="form-label">name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                name="name"
+                required
+                value="<%= row.name %>"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                value="<%= row.email %>"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="mobile" class="form-label">mobile</label>
+              <input
+                type="text"
+                class="form-control"
+                id="mobile"
+                name="mobile"
+                value="<%= row.mobile %>"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="birthday" class="form-label">birthday</label>
+              <input
+                type="date"
+                class="form-control"
+                id="birthday"
+                name="birthday"
+                value="<%= dateToDateString(row.birthday) %>"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="address" class="form-label">address</label>
+              <textarea
+                class="form-control"
+                name="address"
+                id="address"
+                cols="30"
+                rows="3"
+              >
+<%= row.address %></textarea
+              >
+            </div>
+            <button type="submit" class="btn btn-primary">修改</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('../parts/scripts') %>
+<script>
+  function checkForm() {
+    // TODO: 欄位檢查
+
+    const fd = new FormData(document.form1);
+
+    fetch('', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams(fd).toString(),
+    })
+      .then((r) => r.json())
+      .then((obj) => {
+        console.log(JSON.stringify(obj, null, 4));
+        if (obj.success) {
+          alert('資料修改成功');
+        } else {
+          alert(obj.error || '資料修改失敗');
+        }
+      });
+  }
+</script>
+<%- include('../parts/html-foot') %>

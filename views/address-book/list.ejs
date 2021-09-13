@@ -6,15 +6,34 @@
         <div class="col">
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <!-- 計算 -->
+                    <%
+                    const usp = new URLSearchParams();
+                    if(keyword){
+                        usp.set('keyword', keyword);
+                    }
+                    usp.set('page', page-1);
+                    %>
+                    <!-- previous -->
+                    <li class="page-item <%= page<=1 ? 'disabled' : '' %>">
+                        <a class="page-link" href="?<%= usp.toString() %>">Previous</a>
+                    </li>
+                    <!-- 主頁碼 -->
                     <% for(let i=page-5; i<page+5; i++){ %>
-                        <% if(i>=1 && i<=totalPages){ %>
+                        <% if(i>=1 && i<=totalPages){
+                            // 每次重設都會蓋過前面的
+                            usp.set('page', i);
+                        %>
                         <li class="page-item <%= page===i ? 'active' : '' %>">
-                            <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                            <a class="page-link" href="?<%= usp.toString() %>"><%= i %></a>
                         </li>
                         <% } %>
                     <% } %>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                
+                    <% usp.set('page', page+1); %>
+                    <li class="page-item <%= page>=totalPages ? 'disabled' : '' %>">
+                        <a class="page-link" href="?<%= usp.toString() %>">Next</a>
+                    </li>
                 </ul>
             </nav>
         </div>

@@ -62,12 +62,14 @@
             </ul>
           </li>
         </ul>
-        <form class="d-flex">
+        <form class="d-flex" action="/address-book/list">
           <input
             class="form-control me-2"
             type="search"
             placeholder="Search"
             aria-label="Search"
+            name="keyword"
+            value="<%= keyword %> "
           />
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form>

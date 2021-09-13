@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/fontawesome/css/all.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Navbar</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Dropdown
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link disabled"
+                  href="#"
+                  tabindex="-1"
+                  aria-disabled="true"
+                  >Disabled</a
+                >
+              </li>
+            </ul>
+            <form class="d-flex">
+              <input
+                class="form-control me-2"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <button class="btn btn-outline-success" type="submit">
+                Search
+              </button>
+            </form>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+      <!--    <textarea name="" id="ta" cols="80" rows="10"></textarea>-->
+
+      <div class="row">
+        <div class="col">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <!--
+                    <li class="page-item active">
+                        <a class="page-link" href="?keyword=%E6%89%8B&amp;page=1">1</a>
+                    </li>
+                    -->
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th scope="col"><i class="fas fa-trash-alt"></i></th>
+                <th scope="col">#</th>
+                <th scope="col">姓名</th>
+                <th scope="col">Email</th>
+                <th scope="col">手機</th>
+                <th scope="col">生日</th>
+                <th scope="col">地址</th>
+                <th scope="col"><i class="fas fa-edit"></i></th>
+              </tr>
+            </thead>
+            <tbody>
+              <!--
+                <tr>
+                    <td>
+                        <a href="javascript: delete_it(134)">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </td>
+                    <td>134</td>
+                    <td>手消基34</td>
+                    <td>6110e0c8eb75a@test.com</td>
+                    <td>0910214595</td>
+                    <td>1993-03-30</td>
+                    <td>台北市</td>
+                    <td>
+                        <a href="/address-book/edit/134">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </td>
+                </tr>
+-->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="/jquery/jquery.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+      const pagiTpl = (o) => {
+        return `
+            <li class="page-item ${o.active}">
+                <a class="page-link" href="javascript: getListData({page: ${o.page}})">${o.page}</a>
+            </li>`;
+      };
+
+      const itemTpl = (o) => {
+        return `
+            <tr>
+                <td>
+                    <a href="javascript: delete_it(${o.sid})">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                </td>
+                <td>${o.sid}</td>
+                <td>${o.name}</td>
+                <td>${o.email}</td>
+                <td>${o.mobile}</td>
+                <td>${o.birthday}</td>
+                <td>${o.address}</td>
+                <td>
+                    <a href="/address-book/edit/${o.sid}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </td>
+            </tr>
+        `;
+      };
+
+      const render = (data) => {
+        document.querySelector('tbody').innerHTML = data.rows
+          .map((el) => itemTpl(el))
+          .join('');
+
+        // 頁碼
+        str = '';
+        for (let i = data.page - 5; i <= data.page + 5; i++) {
+          if (i >= 1 && i <= data.totalPages) {
+            str += pagiTpl({
+              active: data.page === i ? 'active' : '',
+              page: i,
+            });
+          }
+        }
+        document.querySelector('.pagination').innerHTML = str;
+      };
+
+      const getListData = (opt = {}) => {
+        opt.page = opt.page || 1;
+        opt.keyword = opt.keyword || '';
+        const usp = new URLSearchParams();
+        usp.set('page', opt.page);
+        if (opt.keyword) {
+          usp.set('keyword', opt.keyword);
+        }
+
+        fetch('/address-book/api/list?' + usp.toString())
+          .then((r) => r.json())
+          .then((data) => {
+            console.log(data);
+            render(data);
+          });
+      };
+
+      getListData();
+    </script>
+  </body>
+</html>

@@ -1,9 +1,5 @@
 09:00~09:06
-介紹如何用遠端SSL
-
-
-09:45
-看http 狀態碼 104? 可能說的是被刪除的那個編號?
+介紹如何用遠端SSH
 
 
 insert into 
@@ -64,14 +60,95 @@ RESTful API 作法：
     刪除:
         DELETE /product/:id
 
-// href="javascript check
-// 如何阻止表單送出?
+// href="javascript check -- DONE
 
-10:50 看個
+
 
 csrf 11:15
-避免跨網域請求問題
+避免跨網域請求問題 
+藏token 後端再檢查token
+表單送出一起送token
 
 
 joi
+用來驗證表單的欄位
 檢查格式
+
+
+// 如何阻止表單送出?
+記得表單如果要處理送出的話:
+1. 老師常用的
+onsubmit="checkForm(); return false;"
+
+2. 我自己常用的
+const myForm = document.querySelector("form");
+    myForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+    });
+
+
+/delete
+Request URL: http://localhost:3000/delete/525
+
+""
+Request URL: http://localhost:3000/address-book/525
+
+小結論:
+如果是
+"" -> 當前url
+
+/address ---> 直接從root開始算 而非當前頁面
+http://localhost:3000/address
+
+
+/////////////////////////////////////////////
+afternoon
+
+
+/address-book/add
+/address-book/edit
+
+/api/address-book
+ GET: 取得列表資料
+ POST: 新增資料
+
+
+------------------以address-book 為例子說明
+/api/address-book/:sid
+ GET: 取得單項列表資料
+ PUT: 修改單項資料
+ DELETE: 刪除單項資料
+
+
+ //測試
+ 表單
+ 和非表單的get
+ 是否都會有queryString
+
+
+ ----
+ 14:15 searching nav
+ SELECT * FROM address_book WHERE `name` LIKE '%消炎%';
+
+
+ list 下一頁
+
+
+ 為甚麼不能直接redirect???
+
+ 前端呈現的效能會比較好
+
+而且後端呈現的話
+還需要生成html
+並且傳送資料量較大的html
+前端理論上只要(json)
+
+測multer 沒有圖片的情況
+formData get 擋頭
+
+
+req.params.sid params 名稱測試
+
+redirect ? 123 TEST
+
+a tag 位置測試
