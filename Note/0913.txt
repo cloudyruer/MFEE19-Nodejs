@@ -1,0 +1,70 @@
+09:00~09:06
+介紹如何用遠端SSL
+
+
+09:45
+看http 狀態碼 104? 可能說的是被刪除的那個編號?
+
+
+insert into 
+update v
+delete 
+都會是下面的
+affectedRows: 1,
+1代表有刪除
+
+只有SELECT
+才會是record set
+
+////////////////////////////////
+
+遵守這樣做出來的
+就是RESTful api
+
+透過方法來決定你的操作
+
+get 讀取
+post 新增資料
+put 修改資料
+patch 修補
+delete 刪除
+
+傳統的作法
+    列表:
+    /products?page=12
+    /products/list/12
+
+    新增:
+    /products/add
+    /products/create
+
+    修改:
+    /products/17/edit
+    /products/17/update
+    /products/edit/17
+    /products/update/17
+
+RESTful API 作法：
+純粹只做後端的功能
+(前後端分離)
+
+
+    列表:
+        GET /product
+
+    讀取單筆:
+        GET /product/:id
+
+    新增:
+        POST /product
+
+    修改:
+        PUT /product/:id
+
+    刪除:
+        DELETE /product/:id
+
+// href="javascript check
+// 如何阻止表單送出?
+
+10:50 看個

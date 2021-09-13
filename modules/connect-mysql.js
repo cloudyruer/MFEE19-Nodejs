@@ -8,7 +8,7 @@ const pool = mysql.createPool({
   database: process.env.DB_NAME,
   waitForConnections: true,
   connectionLimit: 10, // 最大連線數
-  queueLimit: 0,
+  queueLimit: 0, //沒有限制排幾個
 });
 
 module.exports = pool.promise(); // 滙出 promise pool
