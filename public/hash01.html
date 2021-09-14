@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      /* .box {
+        height: 800px;
+        width: 300px;
+        background-color: pink;
+        border: 1px solid black;
+      } */
+    </style>
+  </head>
+  <body>
+    <div id="info">
+      <a href="javascript: pushS('/b1')">b1</a>
+      <a href="javascript: pushS('/b2')">b2</a>
+      <a href="javascript: pushS('/b3')">b3</a>
+      <!-- <a href="#b2">b2</a>
+      <a href="#b3">b3</a> -->
+    </div>
+
+    <div class="box" id="b1">1</div>
+    <div class="box" id="b2" style="background-color: aqua">2</div>
+    <div class="box" id="b3">3</div>
+
+    <script>
+      // https://developer.mozilla.org/zh-TW/docs/Web/API/History_API
+
+      //   url 上面的 "javascript: pushS('/b1')" 來的
+      const pushS = (url) => {
+        history.pushState({ t: Date.now(), url }, '', url);
+      };
+
+      //   換頁的話 當初存放的資料是甚麼
+      window.addEventListener('popstate', (e) => {
+        console.log(event.state);
+      });
+
+      const whenHashChanged = () => {
+        //  就算是在上一頁也會觸發
+        // 可以得出現在的hash在哪裡
+        console.log(location.hash);
+        console.log(location.hash.slice(1));
+      };
+
+      window.addEventListener('hashchange', whenHashChanged);
+
+      //  也可以一開始就呼叫
+      //   這樣如果進來的時候有帶# 也可以拿到
+      whenHashChanged();
+    </script>
+  </body>
+</html>

@@ -6,6 +6,7 @@ const express = require('express');
 // 注意: Multer 不会处理任何非 multipart/form-data 类型的表单数据。
 const multer = require('multer');
 const upload = multer({ dest: 'tmp_uploads/' });
+const cors = require('cors'); //0914 NOTE
 // 0908 下午 自製
 const uploadImg = require('./modules/upload-image');
 
@@ -56,6 +57,16 @@ app.use(
     },
   })
 );
+// NOTE 需要使用cookies 和session時（使用白名單
+const corsOptions = {
+  credentials: true,
+  origin: (origin, cb) => {
+    console.log(`origin: ${origin}`);
+    cb(null, true);
+  },
+};
+// WARN 要放在public 前面 0914
+app.use(cors(corsOptions));
 
 // 用此這方式設定 public相當於網站的根目錄
 app.use(express.static('public'));

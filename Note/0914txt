@@ -1,0 +1,120 @@
+location.href
+可以讀取現在的URL
+
+location.hash
+可以拿到現在的#
+
+------
+location.hash
+window.addEventListener('hashchange', cb);
+就算是在上一頁也會觸發
+console.log(location.hash);
+console.log(location.hash.slice(1));
+
+history 是 window 的子物件
+
+用push state 的話畫面不會刷新
+只有變更URL而已(實際上沒有那個頁面)
+所以要搭配後端的技術
+NOTE
+也可以用?a=1 之類的 就可以有queryString
+
+傳統的話更新queryString 會刷新
+但是URL會變成你指定的URL
+
+
+REACT
+路徑透過push state去更動
+
+hash只能是str
+如果用push state就可以有object
+
+NOTE
+hash tag
+會存在history裡面
+所以用戶就可以上一頁或下一頁
+
+
+same origin policy
+我們要遵守同源政策
+
+protocol 協定
+domain 主機 (一樣代表同一台主機)
+port 
+
+以字串的方式去分辨
+http://localhost:3000
+
+http://127.0.0.1:5500
+所以嚴格說起來以上兩個不一樣
+
+localhost 不一定就是 127.0.0.1
+
+localhost其实是个域名，而不是一个ip地址。之所以我们经常把localhost与127.0.0.1认为是同一个是因为我们使用的大多数系统上都默认localhost指向了127.0.0.1这个地址。
+
+127.0.0.1 是一個特殊的 IP 位址，他代表的意義是我家。也就是說，任何人在瀏覽器上輸入 127.0.0.1 只會連到他自己的電腦。
+
+CORS
+9:58
+
+基本上只要不用到cookie 這樣就可以了
+const cors = require('cors');
+app.use(cors());
+
+Response Headers 放了這個
+Access-Control-Allow-Origin: *
+回去看老師的index.js
+
+NOTE
+但但不同來源 cookie不會送!!
+
+所以要用以下的額外設定 白名單
+前端fetch 也要設定
+credentials: 'include',
+
+const corsOptions = {
+  credentials: true,
+  origin: (origin, cb) => {
+    console.log(`origin: ${origin}`);
+    cb(null, true);
+  },
+};
+app.use(cors(corsOptions));
+
+Access-Control-Allow-Credentials: true
+10:41
+
+11:02
+代表是同一台 (包含domain都一樣)
+
+token
+必須透過JS去給
+每次要資料都需要透過JS去給
+不能request的時候就發出去
+
+且必須在https 裡面才有用
+因為在http底下 token會被偷走
+偷取者只要知道token怎麼送就好
+因為server只管token正不正確
+不會管是從哪邊送來的
+
+用戶端的話 可以把token存放在local storage
+
+
+11:25
+//sequelize
+2021 09 14 11 26 34
+有空可以回去看~~~~
+
+cli
+代表commend line
+
+migrations
+記錄你在資料表建立修改的時候的一些紀錄
+
+models 定義結構模板 和資料庫做關聯
+
+seeders
+如果有些資料你要產生的話
+你可以用她這邊的資料夾
+

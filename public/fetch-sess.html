@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="btn" onclick="getData()">get data</button>
+    <br />
+    <textarea name="" id="ta" cols="60" rows="30"></textarea>
+
+    <script>
+      function getData() {
+        // 第一個給 node 用 或是把live server改成 localhost開頭
+        // 第二個給 live server 用 或是把live server改成 localhost開頭
+
+        // 基本上就看原本用甚麼就用甚麼 fetch
+
+        fetch('http://localhost:3000/try-sess', {
+          // fetch('http://127.0.0.1:3000/try-sess', {
+          credentials: 'include',
+        })
+          .then((r) => r.json())
+          .then((data) => {
+            document.querySelector('#ta').value = JSON.stringify(data, null, 4);
+          });
+      }
+    </script>
+  </body>
+</html>

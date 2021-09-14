@@ -94,11 +94,21 @@ Request URL: http://localhost:3000/delete/525
 Request URL: http://localhost:3000/address-book/525
 
 小結論:
+
+經測試:
+a tag
+form
+fetch 都一樣
+
 如果是
 "" -> 當前url
 
-/address ---> 直接從root開始算 而非當前頁面
+/address ---> 直接從root開始算 而非當前頁面 
+(就算當前是在http://localhost:3000/something之類的) 仍會顯是下面的: 
 http://localhost:3000/address
+
+但如果是"" 就會是: (不變)
+http://localhost:3000/something
 
 
 /////////////////////////////////////////////
@@ -123,18 +133,19 @@ afternoon
  //測試
  表單
  和非表單的get
- 是否都會有queryString
+ 是否都會有queryString 
+ NOTE 經測試
+ 應該是沒有preventDefault()的get 才會影響url
 
 
  ----
- 14:15 searching nav
  SELECT * FROM address_book WHERE `name` LIKE '%消炎%';
 
 
  list 下一頁
 
 
- 為甚麼不能直接redirect???
+
 
  前端呈現的效能會比較好
 
@@ -144,11 +155,8 @@ afternoon
 前端理論上只要(json)
 
 測multer 沒有圖片的情況
-formData get 擋頭
 
 
-req.params.sid params 名稱測試
 
-redirect ? 123 TEST
 
-a tag 位置測試
+
